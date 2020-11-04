@@ -9,19 +9,18 @@ import torch
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 
-import config
 from dataset.eval_dataset import EvalDataset
 from model.pipeline import PipeLine
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data', type=str, default=config.DATA_DIR, help='directory to data')
-parser.add_argument('--test', default=config.TEST_SET, help='index list of test uv_maps')
-parser.add_argument('--checkpoint', type=str, default=config.CHECKPOINT_DIR, help='directory to save checkpoint')
-parser.add_argument('--load', type=str, default=config.TEST_LOAD, help='checkpoint name')
-parser.add_argument('--batch', type=int, default=config.BATCH_SIZE)
-parser.add_argument('--save', type=str, default=config.SAVE_DIR, help='save directory')
-parser.add_argument('--out_mode', type=str, default=config.OUT_MODE, choices=('video', 'image'))
-parser.add_argument('--fps', type=int, default=config.FPS)
+parser.add_argument('--data', type=str, default="/home/lukas/Desktop/0128667499bc73c869df6b20a2d4fe26", help='directory to data')
+#parser.add_argument('--test', default=config.TEST_SET, help='index list of test uv_maps')
+parser.add_argument('--checkpoint', type=str, default=".11_04_2020_12_54", help='directory to load checkpoint')
+parser.add_argument('--load', type=str, default="epoch_50.pt", help='checkpoint name')
+parser.add_argument('--batch', type=int, default=1)
+parser.add_argument('--save', type=str, default=".", help='save directory')
+parser.add_argument('--out_mode', type=str, default="video", choices=('video', 'image'))
+parser.add_argument('--fps', type=int, default="30")
 args = parser.parse_args()
 
 
@@ -35,7 +34,7 @@ if __name__ == '__main__':
     if not os.path.exists(args.save):
         os.makedirs(args.save)
 
-    dataset = EvalDataset(args.data, args.test, False)
+    dataset = EvalDataset(args.data, False)
     dataloader = DataLoader(dataset, batch_size=args.batch, shuffle=False, num_workers=4, collate_fn=EvalDataset.get_collect_fn(False))
 
     model = torch.load(checkpoint_file)

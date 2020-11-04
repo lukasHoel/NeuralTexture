@@ -1,16 +1,16 @@
 # =============== Basic Configurations ===========
-TEXTURE_W = 1024
-TEXTURE_H = 1024
+TEXTURE_W = 640
+TEXTURE_H = 480
 TEXTURE_DIM = 16
 USE_PYRAMID = True
-VIEW_DIRECTION = True
+VIEW_DIRECTION = False
 
 
 # =============== Train Configurations ===========
-DATA_DIR = ''
+DATA_DIR = '/home/lukas/Desktop/0128667499bc73c869df6b20a2d4fe26'
 CHECKPOINT_DIR = ''
 LOG_DIR = ''
-TRAIN_SET = ['{:04d}'.format(i) for i in range(899)]
+#TRAIN_SET = ['{:04d}'.format(i) for i in range(899)]
 EPOCH = 50
 BATCH_SIZE = 12
 CROP_W = 256

@@ -55,4 +55,5 @@ class PipeLine(nn.Module):
             uv_map = args[0]
             x = self.texture(uv_map)
         y = self.unet(x)
+
         return x[:, 0:3, :, :], y

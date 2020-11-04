@@ -9,30 +9,30 @@ import torch.nn.functional as F
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
-import config
 from dataset.uv_dataset import UVDataset
 from model.texture import Texture
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--texturew', type=int, default=config.TEXTURE_W)
-parser.add_argument('--textureh', type=int, default=config.TEXTURE_H)
-parser.add_argument('--texture_dim', type=int, default=config.TEXTURE_DIM)
-parser.add_argument('--use_pyramid', type=bool, default=config.USE_PYRAMID)
-parser.add_argument('--data', type=str, default=config.DATA_DIR, help='directory to data')
-parser.add_argument('--checkpoint', type=str, default=config.CHECKPOINT_DIR, help='directory to save checkpoint')
-parser.add_argument('--logdir', type=str, default=config.LOG_DIR, help='directory to save checkpoint')
-parser.add_argument('--train', default=config.TRAIN_SET)
-parser.add_argument('--epoch', type=int, default=config.EPOCH)
-parser.add_argument('--cropw', type=int, default=config.CROP_W)
-parser.add_argument('--croph', type=int, default=config.CROP_H)
-parser.add_argument('--batch', type=int, default=config.BATCH_SIZE)
-parser.add_argument('--lr', type=float, default=config.LEARNING_RATE)
-parser.add_argument('--betas', type=str, default=config.BETAS)
-parser.add_argument('--l2', type=str, default=config.L2_WEIGHT_DECAY)
-parser.add_argument('--eps', type=float, default=config.EPS)
-parser.add_argument('--load', type=str, default=config.LOAD)
-parser.add_argument('--load_step', type=int, default=config.LOAD_STEP)
-parser.add_argument('--epoch_per_checkpoint', type=int, default=config.EPOCH_PER_CHECKPOINT)
+parser.add_argument('--texturew', type=int, default=640)
+parser.add_argument('--textureh', type=int, default=480)
+parser.add_argument('--texture_dim', type=int, default=16)
+parser.add_argument('--use_pyramid', type=bool, default=True)
+parser.add_argument('--view_direction', type=bool, default=False)
+parser.add_argument('--data', type=str, default="/home/lukas/Desktop/0128667499bc73c869df6b20a2d4fe26", help='directory to data')
+parser.add_argument('--checkpoint', type=str, default=".", help='directory to save checkpoint')
+parser.add_argument('--logdir', type=str, default=".", help='directory to save checkpoint')
+#parser.add_argument('--train', default=config.TRAIN_SET)
+parser.add_argument('--epoch', type=int, default=50)
+parser.add_argument('--cropw', type=int, default=640)
+parser.add_argument('--croph', type=int, default=480)
+parser.add_argument('--batch', type=int, default=1)
+parser.add_argument('--lr', type=float, default=1e-3)
+parser.add_argument('--betas', type=str, default='0.9, 0.999')
+parser.add_argument('--l2', type=str, default='0.01, 0.001, 0.0001, 0')
+parser.add_argument('--eps', type=float, default=1e-8)
+parser.add_argument('--load', type=str, default=None)
+parser.add_argument('--load_step', type=int, default=0)
+parser.add_argument('--epoch_per_checkpoint', type=int, default=50)
 args = parser.parse_args()
 
 
@@ -62,7 +62,7 @@ def main():
     if not os.path.exists(checkpoint_dir):
         os.makedirs(checkpoint_dir)
 
-    dataset = UVDataset(args.data, args.train, args.croph, args.cropw, False)
+    dataset = UVDataset(args.data, args.croph, args.cropw, False)
     dataloader = DataLoader(dataset, batch_size=args.batch, shuffle=True, num_workers=4)
 
     if args.load:
